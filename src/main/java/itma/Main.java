@@ -19,32 +19,35 @@ public class Main {
 
         SkewHeap heap = new SkewHeap();
 
-        // Вставка элементов
+//        // Вставка элементов
         heap.insert(10);
-
-        heap.printHeap();
-
+//
+//        heap.printHeap();
+//
+//        heap.insert(20);
+//        heap.printHeap();
+//
+        heap.insert(5);
         heap.insert(20);
         heap.printHeap();
 
-        heap.insert(5);
-        heap.printHeap();
-
-        heap.insert(15);
-        heap.printHeap();
-
-        heap.insert(30);
-
-        // Печать кучи
-        System.out.println("Heap after insertions:");
-        heap.printHeap();
-
-        // Извлечение минимального элемента
-        System.out.println("Extracting min: " + heap.extractMin());
-        heap.printHeap();
-
-        System.out.println("Extracting min: " + heap.extractMin());
-        heap.printHeap();
+//        heap.printHeap();
+//
+//        heap.insert(15);
+//        heap.printHeap();
+//
+//        heap.insert(30);
+//
+//        // Печать кучи
+//        System.out.println("Heap after insertions:");
+//        heap.printHeap();
+//
+//        // Извлечение минимального элемента
+//        System.out.println("Extracting min: " + heap.extractMin());
+//        heap.printHeap();
+//
+//        System.out.println("Extracting min: " + heap.extractMin());
+//        heap.printHeap();
 
     }
 }
