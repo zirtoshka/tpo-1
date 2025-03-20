@@ -1,7 +1,6 @@
 package itma.task1;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.security.InvalidParameterException;
@@ -12,7 +11,7 @@ import java.util.Map;
 public class Tg {
     private static final Map<Integer, BigDecimal> bernoulliCache = new HashMap<>();
     private static final Map<Integer, BigDecimal> factorialCache = new HashMap<>();
-    private static final MathContext MC = new MathContext(50, RoundingMode.HALF_UP);
+    private static final MathContext MC = new MathContext(20, RoundingMode.HALF_UP);
 
     public static final BigDecimal EPSILON = new BigDecimal("1E-10");
     public static final BigDecimal PI = new BigDecimal(Math.PI, MC);
@@ -35,7 +34,7 @@ public class Tg {
 
         if (k > n - k) k = n - k; // C(n,k)=C(n,n-k)
 
-        BigDecimal res = BigDecimal.ZERO;
+        BigDecimal res = BigDecimal.ONE;
         for (int i = 1; i <= k; i++) {
             res = res.multiply(BigDecimal.valueOf(n - k + i)).divide(BigDecimal.valueOf(i), MC);
 //            res *= (double) (n - k + i) / i;
@@ -55,14 +54,14 @@ public class Tg {
             return BigDecimal.ZERO;
         }
 
-        BigDecimal bernoulli = BigDecimal.valueOf(-1).divide(BigDecimal.valueOf(n + 1), MC);
+        BigDecimal bernoulli = BigDecimal.ZERO;
 //        double bernoulli = 0;
-        for (int i = 1; i <= n; i++) {
+        for (int i = 0; i <n; i++) {
             BigDecimal temp;
-            if (bernoulliCache.containsKey(n - i)) {
-                temp = bernoulliCache.get(n - i);
+            if (bernoulliCache.containsKey(i)) {
+                temp = bernoulliCache.get(i);
             } else {
-                temp = getBernoulli(n - i);
+                temp = getBernoulli(i);
             }
 //            bernoulli += temp * binomCoeff(n + 1, i + 1);
             bernoulli = bernoulli.add(
@@ -96,48 +95,58 @@ public class Tg {
         return res;
     }
 
-    public static BigDecimal normalize(BigDecimal x) {
-        BigDecimal k = x.divide(PI, MC).setScale(0, RoundingMode.HALF_EVEN);
-        x = x.subtract(k.multiply(PI), MC);
 
-        if (x.compareTo(HALF_PI) > 0) {
-            x = x.subtract(PI, MC);
-        } else if (x.compareTo(HALF_PI.negate()) < 0) {
-            x = x.add(PI, MC);
+    public static BigDecimal normalize(BigDecimal x) {
+        //tg(x+pi•k)=tgx
+        x = x.remainder(PI, MC);// Остаток от деления на π
+
+        if(x.compareTo(HALF_PI)>=0){
+            x = x.subtract(PI);
+        } else if (x.compareTo(HALF_PI.negate())<0) {
+            x=x.add(PI);
+
         }
+
 
         if (x.subtract(HALF_PI).abs().compareTo(EPSILON) < 0 || x.add(HALF_PI).abs().compareTo(EPSILON) < 0) {
             throw new ArithmeticException("tan(x) не определен в x = " + x);
         }
-
-        if (k.remainder(BigDecimal.valueOf(2)).abs().intValue() == 1) {
-            x = x.negate();
-        }
-
+        System.out.println(x);
         return x;
     }
+
 
 
     public static BigDecimal tg(BigDecimal x, Integer n) throws Exception {
         if (n < 1) throw new InvalidParameterException("n must be greater than 1");
 
         if (x.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO;
-
+        System.out.println(x);
         x = normalize(x);
-
+        System.out.println(x+"sddsd");
         BigDecimal res = BigDecimal.ZERO;
 
         for (int i = 1; i <= n; i++) {
             BigDecimal a = BigDecimal.valueOf(Math.pow(2, 2 * i));
+//            res = res.add(
+//                    getBernoulli(2 * i).abs()
+//                            .multiply(
+//                                    a.multiply(a.subtract(BigDecimal.ONE)))
+//            ).multiply(
+//                    x.pow(2 * i - 1)
+//            ).divide(
+//                    factorial(2 * i), MC
+//            );
+
             res = res.add(
                     getBernoulli(2 * i).abs()
                             .multiply(
                                     a.multiply(a.subtract(BigDecimal.ONE)))
-            ).multiply(
+            .multiply(
                     x.pow(2 * i - 1)
             ).divide(
                     factorial(2 * i), MC
-            );
+            ));
 //            res += Math.abs(getBernoulli(2 * i)) * a * (a - 1) * Math.pow(x, 2 * i - 1) / factorial(2 * i);
         }
         return res;
