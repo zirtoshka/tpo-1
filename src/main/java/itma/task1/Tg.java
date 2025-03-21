@@ -111,7 +111,6 @@ public class Tg {
         if (x.subtract(HALF_PI).abs().compareTo(EPSILON) < 0 || x.add(HALF_PI).abs().compareTo(EPSILON) < 0) {
             throw new ArithmeticException("tan(x) не определен в x = " + x);
         }
-        System.out.println(x);
         return x;
     }
 
@@ -121,9 +120,7 @@ public class Tg {
         if (n < 1) throw new InvalidParameterException("n must be greater than 1");
 
         if (x.compareTo(BigDecimal.ZERO) == 0) return BigDecimal.ZERO;
-        System.out.println(x);
         x = normalize(x);
-        System.out.println(x+"sddsd");
         BigDecimal res = BigDecimal.ZERO;
 
         for (int i = 1; i <= n; i++) {

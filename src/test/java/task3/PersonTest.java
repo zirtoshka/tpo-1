@@ -23,11 +23,13 @@ public class PersonTest {
     }
 
     @Test
-    void testGetName() {
+    void testName() {
         assertEquals(null, person.getName());
         person.setName("Tolik");
         assertEquals("Tolik", person.getName());
     }
+
+
 
 
     @Test
@@ -92,4 +94,34 @@ public class PersonTest {
             assertNotNull(head);
         }
     }
+
+    @Test
+    public void testSmileWhenInPanicAhaha() {
+        person.panicAhaha();
+        assertTrue(person.getHeads()[0].isFearing());
+        person.smile(0);
+        assertTrue(person.getHeads()[0].isFearing());
+    }
+
+    @Test
+    public void testSurpriseWhenInPanicAhaha() {
+        person.panicAhaha();
+        assertTrue(person.getHeads()[0].isFearing());
+        person.surprise(0);
+        assertTrue(person.getHeads()[0].isFearing());
+    }
+
+
+    @Test
+    public void testSetHeads() {
+        Head[] newHeads = new Head[2];
+        newHeads[0] = new Head();
+        newHeads[1] = new Head();
+        person.setHeads(newHeads);
+
+        assertEquals(2, person.getHeads().length);
+        assertNotNull(person.getHeads()[0]);
+        assertNotNull(person.getHeads()[1]);
+    }
+
 }

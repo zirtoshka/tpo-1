@@ -67,4 +67,35 @@ public class HeadTest {
         assertEquals(TeethState.HIDE, head.getTeethState());
     }
 
+
+
+    @Test
+    public void testIsFearingFalseWhenMouthStateIsDifferent() {
+        head.setEmotionalState(Emotions.FEAR);
+        head.setMouthState(MouthState.CLOSE); // Not the expected mouth state
+        head.setTeethState(TeethState.GRIN);
+        head.setEyesState(EyesState.WIDE_OPEN);
+
+        assertFalse(head.isFearing(), "The head should not be fearing because mouth state is not STRETCHING_OUT_IN_WIDTH.");
+    }
+
+    @Test
+    public void testIsFearingFalseWhenTeethStateIsDifferent() {
+        head.setEmotionalState(Emotions.FEAR);
+        head.setMouthState(MouthState.STRETCHING_OUT_IN_WIDTH);
+        head.setTeethState(TeethState.HIDE); // Not the expected teeth state
+        head.setEyesState(EyesState.WIDE_OPEN);
+
+        assertFalse(head.isFearing(), "The head should not be fearing because teeth state is not GRIN.");
+    }
+
+    @Test
+    public void testIsFearingFalseWhenEyesStateIsDifferent() {
+        head.setEmotionalState(Emotions.FEAR);
+        head.setMouthState(MouthState.STRETCHING_OUT_IN_WIDTH);
+        head.setTeethState(TeethState.GRIN);
+        head.setEyesState(EyesState.CLOSE); // Not the expected eyes state
+
+        assertFalse(head.isFearing(), "The head should not be fearing because eyes state is not WIDE_OPEN.");
+    }
 }
