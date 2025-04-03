@@ -69,7 +69,7 @@ public class Tg {
             );
         }
 //        bernoulli = -bernoulli / (n + 1);
-        bernoulli = bernoulli.divide(BigDecimal.valueOf(n + 1), MC).negate();
+        bernoulli = bernoulli.divide(BigDecimal.valueOf(n + 1), MC).multiply(BigDecimal.valueOf(-1));
         bernoulliCache.put(n, bernoulli);
         return bernoulli;
     }
@@ -107,7 +107,6 @@ public class Tg {
 
         }
 
-
         if (x.subtract(HALF_PI).abs().compareTo(EPSILON) < 0 || x.add(HALF_PI).abs().compareTo(EPSILON) < 0) {
             throw new ArithmeticException("tan(x) не определен в x = " + x);
         }
@@ -125,25 +124,35 @@ public class Tg {
 
         for (int i = 1; i <= n; i++) {
             BigDecimal a = BigDecimal.valueOf(Math.pow(2, 2 * i));
+
+
+
+
+            res = res.add(
+                    getBernoulli(2 * i).multiply(BigDecimal.valueOf(Math.pow(-1,i+1)), MC)
+                            .multiply(
+                                    a.multiply(
+                                            a.subtract(BigDecimal.ONE, MC)
+                                    ), MC
+                            )
+                            .multiply(
+                                    x.pow(2 * i - 1, MC), MC
+                            ).divide(
+                                    factorial(2 * i), MC
+                            ), MC);
+
 //            res = res.add(
 //                    getBernoulli(2 * i).abs()
 //                            .multiply(
-//                                    a.multiply(a.subtract(BigDecimal.ONE)))
-//            ).multiply(
-//                    x.pow(2 * i - 1)
+//                                    a.multiply(
+//                                            a.subtract(BigDecimal.ONE)
+//                                    )
+//                            )
+//            .multiply(
+//                    x.pow(2 * i - 1, MC)
 //            ).divide(
 //                    factorial(2 * i), MC
-//            );
-
-            res = res.add(
-                    getBernoulli(2 * i).abs()
-                            .multiply(
-                                    a.multiply(a.subtract(BigDecimal.ONE)))
-            .multiply(
-                    x.pow(2 * i - 1)
-            ).divide(
-                    factorial(2 * i), MC
-            ));
+//            ));
 //            res += Math.abs(getBernoulli(2 * i)) * a * (a - 1) * Math.pow(x, 2 * i - 1) / factorial(2 * i);
         }
         return res;

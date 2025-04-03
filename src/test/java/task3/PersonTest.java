@@ -41,6 +41,8 @@ public class PersonTest {
         person.smile(1);
         assertEquals(person.getHeads()[1].getTeethState(), TeethState.SHOW);
         assertEquals(person.getHeads()[1].getMouthState(), MouthState.STRETCHING_OUT_IN_WIDTH);
+        assertEquals(person.getHeads()[0].getTeethState(), TeethState.SHOW);
+        assertEquals(person.getHeads()[0].getMouthState(), MouthState.STRETCHING_OUT_IN_WIDTH);
     }
 
     @Test
@@ -124,4 +126,9 @@ public class PersonTest {
         assertNotNull(person.getHeads()[1]);
     }
 
+
+    @Test
+    public void testIllegalAmountOfHeads(){
+        assertThrows(IllegalArgumentException.class, () -> new Person(-1));
+    }
 }

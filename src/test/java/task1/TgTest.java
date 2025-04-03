@@ -22,7 +22,7 @@ public class TgTest {
     @ParameterizedTest
 //    @CsvSource({
 //            "0.0, 10, 0.0",
-//            "0.1, 10, 0.100334672",
+//            "0.1, 10, 0.100334672", с периодом
 //            "10, 100, 0.648360827",
 //            "-1, 30, -1.5574077246549023",
 //            "-6, 30, 0.29100619138474"
@@ -33,6 +33,17 @@ public class TgTest {
         BigDecimal result = Tg.tg(x, n);
         assertEquals(expected.setScale(9, RoundingMode.HALF_UP), result.setScale(9, RoundingMode.HALF_UP));
     }
+
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/task1/tg2.csv")
+    @DisplayName("Тестирование tg(x) адекватных случаев")
+    void testTg2(BigDecimal x, int n, BigDecimal expected) throws Exception {
+        BigDecimal result = Tg.tg(x, n);
+        assertTrue(expected.subtract(result).abs().compareTo(BigDecimal.ONE) <= 0);
+    }
+
+
 
     @Test
     @DisplayName("Тестирование исключений в tg(x)")

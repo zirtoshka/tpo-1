@@ -17,38 +17,40 @@ public class Person {
     }
 
     public Person(int amountOfHeads) {
+        if (amountOfHeads < 1) throw new IllegalArgumentException();
+
         this.heads = new Head[amountOfHeads];
         for (int i = 0; i < amountOfHeads; i++) {
             this.heads[i] = new Head();
         }
     }
 
-    public void smile(int headNumber){
-        if(isPanicAhaha()) return;
+    public void smile(int headNumber) {
+        if (isPanicAhaha()) return;
         heads[headNumber].smile();
     }
 
-    public void surprise(int headNumber){
-        if(isPanicAhaha()) return;
+    public void surprise(int headNumber) {
+        if (isPanicAhaha()) return;
         heads[headNumber].surprise();
     }
 
-    public void panicAhaha(){
+    public void panicAhaha() {
         for (Head head : heads) {
             head.fear();
         }
     }
 
 
-    public void setDefaultState(){
+    public void setDefaultState() {
         for (Head head : heads) {
             head.setDefault();
         }
     }
 
-    public boolean isPanicAhaha(){
+    public boolean isPanicAhaha() {
         for (Head head : heads) {
-            if(!head.isFearing()) return false;
+            if (!head.isFearing()) return false;
         }
         return true;
     }
